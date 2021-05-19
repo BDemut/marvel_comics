@@ -29,7 +29,7 @@ class Repository @Inject constructor(
     init {
         cachedWord.value = sharedPref?.getString("word", null)
     }
-    
+
     fun getComic(id : Int) : LiveData<Comic> {
         return database.comicDao.getComic(id)
     }
