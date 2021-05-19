@@ -103,18 +103,18 @@ class ListFragment : Fragment() {
                 }
                 ListViewModel.State.LOADING -> {
                     binding.spinner.visibility = View.VISIBLE
-                    binding.recycler.visibility = View.GONE
+                    binding.recycler.visibility = View.INVISIBLE
                     binding.help.visibility = View.GONE
                 }
                 ListViewModel.State.HELP_NO_COMICS -> {
                     binding.spinner.visibility = View.GONE
-                    binding.recycler.visibility = View.GONE
+                    binding.recycler.visibility = View.INVISIBLE
                     binding.help.visibility = View.VISIBLE
                     binding.helpText.text = getString(R.string.help_no_comics, viewModel.searchWord.value)
                 }
                 ListViewModel.State.HELP_NO_SEARCHWORD -> {
                     binding.spinner.visibility = View.GONE
-                    binding.recycler.visibility = View.GONE
+                    binding.recycler.visibility = View.INVISIBLE
                     binding.help.visibility = View.VISIBLE
                     binding.helpText.text = getString(R.string.help_no_search_word)
                 }

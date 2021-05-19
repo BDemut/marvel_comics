@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.defconapplications.marvel.repository.Repository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,6 +15,8 @@ class ListViewModel @Inject constructor(val repository: Repository) : ViewModel(
     val errorMessage = MutableLiveData<String?>(null)
     val comicList = repository.comics
     val comicListUpdateEvent = MutableLiveData(false)
+    private var job = Job()
+
     enum class State {
         LISTING,
         LOADING,
@@ -28,7 +30,9 @@ class ListViewModel @Inject constructor(val repository: Repository) : ViewModel(
 
 
     fun fetchComicData() {
-        viewModelScope.launch {
+        job.cancel()
+        job = Job()
+        CoroutineScope(Dispatchers.Main + job).launch {
             if (searchWord.value != "") {    //network call fails with an empty title
                 errorMessage.value = repository.fetchComics(searchWord.value)
             }
@@ -41,5 +45,10 @@ class ListViewModel @Inject constructor(val repository: Repository) : ViewModel(
             if (comicList.value!!.isEmpty())
                 comicListUpdateEvent.value = true
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        job.cancel()
     }
 }
