@@ -42,10 +42,4 @@ class ListViewModel @Inject constructor(val repository: Repository) : ViewModel(
                 comicListUpdateEvent.value = true
         }
     }
-
-    fun refreshCache() {
-        viewModelScope.launch {
-            errorMessage.value = repository.refreshCache()
-        }
-    }
 }

@@ -29,9 +29,7 @@ class Repository @Inject constructor(
     init {
         cachedWord.value = sharedPref?.getString("word", null)
     }
-
-
-
+    
     fun getComic(id : Int) : LiveData<Comic> {
         return database.comicDao.getComic(id)
     }
@@ -57,23 +55,4 @@ class Repository @Inject constructor(
             cachedWord.value = str
         return errorMessage
     }
-
-    suspend fun refreshCache(): String? {
-        val errorMessage = withContext(Dispatchers.IO) {
-            try {
-                if (cachedWord.value == null) {
-                    val c = apiService.getAllComics().await().data.results
-                    database.comicDao.replace(*c.asRoomComics())
-                } else {
-                    val c = apiService.getFilteredComics(str= cachedWord.value!!).await().data.results
-                    database.comicDao.replace(*c.asRoomComics())
-                }
-                null
-            } catch (e : Exception) {
-                "Network call faliure: ${e.message}"
-            }
-        }
-        return errorMessage
-    }
-
 }

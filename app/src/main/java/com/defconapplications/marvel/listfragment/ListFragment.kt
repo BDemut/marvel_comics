@@ -32,8 +32,6 @@ class ListFragment : Fragment() {
         viewModel =
                 ViewModelProvider(this).get(ListViewModel::class.java)
 
-        viewModel.refreshCache()
-
         binding.searchWindow.setText(viewModel.searchWord.value)
 
         binding.recycler.adapter = ComicAdapter(ComicClickListener {
@@ -86,9 +84,9 @@ class ListFragment : Fragment() {
                     viewModel.state.value = ListViewModel.State.LOADING
                 else if (viewModel.searchWord.value == "")
                     viewModel.state.value = ListViewModel.State.HELP_NO_SEARCHWORD
-                else if (viewModel.comicList.value!!.isEmpty())
+                else if (viewModel.comicList.value!!.isEmpty() && viewModel.searchWord.value != null)
                     viewModel.state.value = ListViewModel.State.HELP_NO_COMICS
-                else {
+                else if (viewModel.comicList.value!!.isNotEmpty()) {
                     (binding.recycler.adapter as ComicAdapter).submitList(viewModel.comicList.value)
                     viewModel.state.value = ListViewModel.State.LISTING
                 }

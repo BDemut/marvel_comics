@@ -99,7 +99,7 @@
 
                 <TextView
                     android:id="@+id/help_text"
-                    style="@style/TextAppearance.MyTheme.Headline5"
+                    style="@style/TextAppearance.MyTheme.Headline6"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
